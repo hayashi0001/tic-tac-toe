@@ -83,7 +83,7 @@ cells.forEach((cell, index) => {
         //cell.textContent === currentPlayer &&
         if (gameActive && cell.classList.contains("unset") === true) {
             cell.textContent = '';
-            cell.style.opacity = 0.3;
+            cell.style.opacity = 1;
         }
     });
 });
