@@ -1,5 +1,5 @@
 //constは再代入のできない変数宣言
-const cells = document.querySelectorAll('.cell');//cssの要素を引っ張てくる（一個目のcell）
+const cells = document.querySelectorAll('.cell');//cssの要素を引っ張てくる
 const restartButton = document.getElementById('restart-button');
 const resultMessage = document.getElementById('result');
 
