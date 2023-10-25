@@ -1,11 +1,17 @@
 //constは再代入のできない変数宣言
 const cells = document.querySelectorAll('.cell');//cssの要素を引っ張てくる
 const restartButton = document.getElementById('restart-button');
-const resultMessage = document.getElementById('result');
+const resultMessage = document.getElementById('result');//htmlの要素メッセージでなくエレメント
+const winMessage= document.getElementById('winMessage');
+const winElment = document.getElementById('winElement');
 
 let currentPlayer = 'X';
-let board = ['', '', '', '', '', '', '', '', ''];
+let board = ['', '', '', 
+             '', '', '', 
+             '', '', ''];
+
 let gameActive = true;
+let gameWin = false;
 
 //勝利パターン
 const winningCombos = [
@@ -27,8 +33,11 @@ function checkWinner() {
         //入力されたcellの中身はすべて同じプレイヤーかチェック
         if (board[a] && board[a] === board[b] && board[a] === board[c]) {
             gameActive = false;
-            resultMessage.textContent = `${currentPlayer}'s Wins!!!`;
-            cells[a].style.backgroundColor = cells[b].style.backgroundColor = cells[c].style.backgroundColor = 'gold';
+            gameWin = true;
+            //cells.style.display = 'none';
+            //resultMessage.textContent = `${currentPlayer}'s Wins!!!`;
+            //cells[a].style.backgroundColor = cells[b].style.backgroundColor = cells[c].style.backgroundColor = 'gold';
+            //cssに勝った見た目をclassとして追加
         }
     }
 }
@@ -36,15 +45,26 @@ function checkWinner() {
 //セルをクリックしたときの動き
 function handleCellClick(cell,index) {
     //ゲーム中でありセルがからの時
-    if (board[index] === '' && gameActive) {
+    //早期リターンif(!gameActive return)にしてgameActive条件を消す
+    if(!gameActive) return
+    //if(cell.classList.contains("unset"))
+    if (board[index] === '') {
         board[index] = currentPlayer;
         cells[index].textContent = currentPlayer;
         cells[index].style.opacity = 1;
 
-        cells[index] = cell.classList.remove("unset");
+        cell.classList.remove("unset");
         
         //勝利者の確認
         checkWinner();
+        if(gameWin == true){
+            cells.forEach((cell) => {
+                cell.style.display = "none";
+                winMessage.textContent = `${currentPlayer}'s Wins!!!`;
+                winElment.style.display = "block";
+            });
+            //resultMessage.textContent = `${currentPlayer}'s Wins!!!`;
+        }
 
         if (gameActive) {
             //?の右側はtrueだった場合:の右側はfalseだった場合の処理をする
@@ -53,11 +73,16 @@ function handleCellClick(cell,index) {
     }
 }
 
-//リスタートとボタンを押した
+//リスタートボタンを押した
 function restartGame() {
+    cells.forEach((cell) => {
+        winElment.style.display = "none";
+        cell.style.display = "block";
+    });
     currentPlayer = 'X';
     board = ['', '', '', '', '', '', '', '', ''];
     gameActive = true;
+    gameWin = false
     resultMessage.textContent = '';
     cells.forEach((cell, index) => {
         cell.textContent = '';
@@ -89,3 +114,5 @@ cells.forEach((cell, index) => {
 });
 
 restartButton.addEventListener('click', restartGame);
+
+//テンプレートリテラルは使っていこう
