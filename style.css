@@ -6,7 +6,7 @@ body {
     justify-content: center;
     height: 100vh;
     margin: 0;
-    /*background-color: blueviolet;*/
+    padding-top: 150px;
 }
 
 .game-board{
